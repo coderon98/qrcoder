@@ -1,0 +1,282 @@
+# npx @openapitools/openapi-generator-cli@2.2.5 generate -i qr-coder-api.yml -g python-flask -o .
+openapi: '3.0.2'
+info:
+  title: QR CODER API
+  description: Restful API - QR Code Generator
+  version: '1.0'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+  
+  schemas:
+    vcardSchema:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        numero:
+          type: string
+        fixe:
+          type: string
+        fax:
+          type: string
+        email:
+          type: string
+        society:
+          type: string
+        job:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        zipcode:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        website:
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - email
+        - firstname
+        - lastname
+        - numero
+
+    wifiSchema:
+      type: object
+      properties:
+        network:
+          type: string
+        password: 
+          type: string
+        hiddenNetwork:
+          type: boolean
+        cryptage:
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - network
+        - password 
+        - cryptage
+
+    smsSchema:
+      type: object
+      properties:
+        numero:
+          type: string
+        payload: 
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - numero
+        - payload
+
+    emailSchema:
+      type: object
+      properties:
+        email:
+          type: string
+        objet: 
+          type: string
+        payload: 
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - email
+        - objet
+        - payload
+
+    textSchema:
+      type: object
+      properties:
+        payload: 
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - payload
+
+    urlSchema:
+      type: object
+      properties:
+        payload: 
+          type: string
+        frame: 
+          type: string
+        shape: 
+          type: string
+        logo: 
+          type: string
+      required: 
+        - payload   
+
+
+paths:
+  /health:
+    get:
+      security: []
+      summary: returns ok if everything is alright
+      responses:
+        '200':
+          description: check the current state of the API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                required:
+                  - status
+
+  /api/v1/qrcode/text:
+    post: 
+      security: []
+      summary: returns a qrcode that contains simple text (500 characters maximum)
+      requestBody:
+        required: true
+        description: title and payload of the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textSchema'
+      responses:
+        '200':
+          description: generate a  text qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+  /api/v1/qrcode/wifi:
+    post: 
+      security: []
+      summary: returns a qrcode that contains wifi credentials
+      requestBody:
+        required: true
+        description: title and payload of the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wifiSchema'
+      responses:
+        '200':
+          description: generate a wifi qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+  /api/v1/qrcode/sms:
+    post: 
+      security: []
+      summary: returns a qrcode that contains sms credentials
+      requestBody:
+        required: true
+        description: phone number and payload of the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/smsSchema'
+      responses:
+        '200':
+          description: generate a sms qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+  /api/v1/qrcode/vcard:
+    post: 
+      security: []
+      summary: returns a qrcode that contains vcard data
+      requestBody:
+        required: true
+        description: all the data of vcard in the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vcardSchema'
+      responses:
+        '200':
+          description: generate a vcard qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+  /api/v1/qrcode/email:
+    post: 
+      security: []
+      summary: returns a qrcode that contains email data
+      requestBody:
+        required: true
+        description: email in the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/emailSchema'
+      responses:
+        '200':
+          description: generate a email qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  /api/v1/qrcode/url:
+    post: 
+      security: []
+      summary: returns a qrcode that contains url data
+      requestBody:
+        required: true
+        description: url in the qrcode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/urlSchema'
+      responses:
+        '200':
+          description: generate a url qrcode
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary

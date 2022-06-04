@@ -1,0 +1,339 @@
+openapi: 3.0.2
+info:
+  description: Restful API - QR Code Generator
+  title: QR CODER API
+  version: "1.0"
+servers:
+- url: /
+paths:
+  /api/v1/qrcode/email:
+    post:
+      operationId: api_v1_qrcode_email_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/emailSchema'
+        description: email in the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a email qrcode
+      security: []
+      summary: returns a qrcode that contains email data
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/v1/qrcode/sms:
+    post:
+      operationId: api_v1_qrcode_sms_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/smsSchema'
+        description: phone number and payload of the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a sms qrcode
+      security: []
+      summary: returns a qrcode that contains sms credentials
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/v1/qrcode/text:
+    post:
+      operationId: api_v1_qrcode_text_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/textSchema'
+        description: title and payload of the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a  text qrcode
+      security: []
+      summary: returns a qrcode that contains simple text (500 characters maximum)
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/v1/qrcode/url:
+    post:
+      operationId: api_v1_qrcode_url_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/urlSchema'
+        description: url in the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a url qrcode
+      security: []
+      summary: returns a qrcode that contains url data
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/v1/qrcode/vcard:
+    post:
+      operationId: api_v1_qrcode_vcard_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vcardSchema'
+        description: all the data of vcard in the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a vcard qrcode
+      security: []
+      summary: returns a qrcode that contains vcard data
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/v1/qrcode/wifi:
+    post:
+      operationId: api_v1_qrcode_wifi_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wifiSchema'
+        description: title and payload of the qrcode
+        required: true
+      responses:
+        "200":
+          content:
+            image/png:
+              schema:
+                format: binary
+                type: string
+          description: generate a wifi qrcode
+      security: []
+      summary: returns a qrcode that contains wifi credentials
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /health:
+    get:
+      operationId: health_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: check the current state of the API
+      security: []
+      summary: returns ok if everything is alright
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    vcardSchema:
+      properties:
+        firstname:
+          title: firstname
+          type: string
+        lastname:
+          title: lastname
+          type: string
+        numero:
+          title: numero
+          type: string
+        fixe:
+          title: fixe
+          type: string
+        fax:
+          title: fax
+          type: string
+        email:
+          title: email
+          type: string
+        society:
+          title: society
+          type: string
+        job:
+          title: job
+          type: string
+        address:
+          title: address
+          type: string
+        city:
+          title: city
+          type: string
+        zipcode:
+          title: zipcode
+          type: string
+        state:
+          title: state
+          type: string
+        country:
+          title: country
+          type: string
+        website:
+          title: website
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - email
+      - firstname
+      - lastname
+      - numero
+      title: vcardSchema
+      type: object
+    wifiSchema:
+      properties:
+        network:
+          title: network
+          type: string
+        password:
+          title: password
+          type: string
+        hiddenNetwork:
+          title: hiddenNetwork
+          type: boolean
+        cryptage:
+          title: cryptage
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - cryptage
+      - network
+      - password
+      title: wifiSchema
+      type: object
+    smsSchema:
+      properties:
+        numero:
+          title: numero
+          type: string
+        payload:
+          title: payload
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - numero
+      - payload
+      title: smsSchema
+      type: object
+    emailSchema:
+      properties:
+        email:
+          title: email
+          type: string
+        objet:
+          title: objet
+          type: string
+        payload:
+          title: payload
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - email
+      - objet
+      - payload
+      title: emailSchema
+      type: object
+    textSchema:
+      properties:
+        payload:
+          title: payload
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - payload
+      title: textSchema
+      type: object
+    urlSchema:
+      properties:
+        payload:
+          title: payload
+          type: string
+        frame:
+          title: frame
+          type: string
+        shape:
+          title: shape
+          type: string
+        logo:
+          title: logo
+          type: string
+      required:
+      - payload
+      title: urlSchema
+      type: object
+    inline_response_200:
+      example:
+        status: status
+      properties:
+        status:
+          title: status
+          type: string
+      required:
+      - status
+      title: inline_response_200
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: X-API-KEY
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller_.info_from_ApiKeyAuth
